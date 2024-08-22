@@ -21,8 +21,11 @@ class SystemMonitor:
         print(message)
 
     def check_cpu_load(self):
-        cpu_load = psutil.cpu_percent(interval=1)
+        cpu_load = psutil.cpu_percent(interval=1, percpu=True)
         self.log(f'Current CPU Load is {cpu_load}%')
+        for current_core in cpu_load:
+            if current_core > 50:
+                self.log(f'Warning: CPU core {current_core} exceeds 50%')
         return cpu_load
 
     def check_ram_load(self):
